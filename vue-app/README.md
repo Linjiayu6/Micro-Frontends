@@ -20,6 +20,9 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+# 子项目配置
+- 构建出口配置: 主框架引用
+- 打包出口配置: 定义生命周期
 
 ## install
 ``` bash
@@ -27,7 +30,8 @@ vue init webpack vue-app
 ```
 
 ## webpack.base.conf.js
-library: 'vueApp'
+- window.vueApp
+
 ``` bash
   output: {
     path: config.build.assetsRoot,
