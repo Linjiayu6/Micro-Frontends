@@ -1,0 +1,50 @@
+<html>
+<body>
+  <script>
+    const object = {
+        name: 'Lin.JY',
+        fn: function () {
+            console.log('this', this)
+            console.log('this.name', this.name)
+        }
+    }
+    // 1. 输出?
+    object.fn()
+    
+    // 2. 输出?
+    objFn= object.fn
+    objFn()
+
+    // 3. 明确绑定
+    objFnn= object.fn.bind(object)
+    objFnn()
+  </script>
+
+
+  <script>
+  function foo(){
+    console.log(a);
+    }
+
+  function bar(){
+    let a = 3;
+    foo();
+  }
+
+  let a = 2;
+
+  bar()
+  </script>
+</body>
+</html>
+
+
+<script>
+function foo(){
+  console.log(this.count)
+  console.log(foo.count)
+}
+var count = 1
+foo.count = 2
+foo()
+</script>
