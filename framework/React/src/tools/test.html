@@ -1,5 +1,6 @@
 <html>
 <body>
+  <div id="DOM"></div>
   <script>
     const object = {
         name: 'Lin.JY',
@@ -47,4 +48,88 @@ function foo(){
 var count = 1
 foo.count = 2
 foo()
+</script>
+
+<script>
+const virtualDom = {
+    key: null,
+    type: 'div',
+    props: {
+        class: 'DIV_CLASSNAME',
+        id: 'DIV_ID',
+        style: {
+            color: 'red'
+        },
+        children: [
+            {
+                type: 'span',
+                props: {
+                    id: 'SPAN_ID_1',
+                    children: 'SPAN_TEXT1'
+                },
+                
+            },
+            {
+                type: 'span',
+                props: {
+                    id: 'SPAN_ID_2',
+                    children: 'SPAN_TEXT2',
+                    onClick: () => alert('HHHHHHHHHH')
+                },
+            },
+        ]
+    },
+}
+
+</script>
+
+<script>
+const createElement = (VNode) => {
+  // 1. 创建 Node
+  const node = document.createElement(VNode.type)
+  // 2. 获取 props keys
+  const props = VNode.props
+  keys = Object.keys(props)
+  // 3. 遍历 props keys
+  keys.forEach(type => {
+    // 3-1 当前值
+    let val = props[type]
+    // 类型是children
+    if (type === 'children') {
+      // 字符串
+      if (typeof(val) === 'string') {
+          node.innerText = val
+      }
+      // 数组类型
+      if (val instanceof Array) {
+        val.forEach((item) => {
+          // 将返回的node插入
+          node.appendChild(createElement(item))
+        })
+      }
+      return
+    }
+    if (type === 'onClick') {
+      document.addEventListener('click', val)
+      return
+    }
+    // 将属性值插入至Node
+    node.setAttribute(type, val)
+  })
+  return node
+}
+
+const DOM = createElement(virtualDom)
+document.getElementById('DOM').appendChild(DOM)
+</script>
+
+<script>
+const insertElement = (parentNode, node, replaceNode, type) => {
+  if (type === 'replace') {
+    parentNode.replaceChild(node, replaceNode)
+  }
+  if (type === 'append') {
+    parentNode.appendChild(node)
+  }
+}
 </script>

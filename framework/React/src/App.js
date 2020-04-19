@@ -1,4 +1,6 @@
 import React from 'react';
+import DOM from './tools/virtualDom.js';
+import Button from './components/button';
 
 class App extends React.Component {
   static defaultProps = {
@@ -8,16 +10,44 @@ class App extends React.Component {
 
   constructor (props) {
     super(props)
-    console.log(props)
     this.handleClick3 = this.handleClick3.bind(this)
+
+    this.state = {
+      'show': true,
+      'text': '我是一个粉刷匠'
+    }
   }
   
   componentWillMount () {
-    console.log('componentWillMount')
+    // this.setState({ test1: '1' })
+    console.log('======  componentWillMount ====== ', this.state)
   }
 
   componentDidMount () {
-    console.log('componentDidMount')
+    this.setState({ test2: '2' })
+    console.log('======  componentDidMount ====== ', this.state)
+    document.body.appendChild(DOM)
+    console.log(DOM)
+  }
+
+  componentWillReceiveProps (nextProps){
+    // this.setState({ test2: '2' })
+    console.log('App.js componentWillReceiveProps', nextProps)
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    console.log('App.js shouldComponentUpdate', nextProps, nextState)
+    // return false // 不会触发render
+    return true
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    console.log('App.js componentWillUpdate', nextProps, nextState)
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    // this.setState({ test2: '2' })
+    console.log('App.js componentDidUpdate', prevProps, prevState)
   }
 
   handleClick1 () {
@@ -27,10 +57,13 @@ class App extends React.Component {
 
   handleClick2 () {
     console.log('====== handleClick2 =====', this)
+    // this.setState({ 'text': '你不是' })
+    this.setState((state, props) => ({ 'text': '你不是,  你闭嘴' }))
   }
 
   handleClick3 () {
     console.log('====== handleClick3 =====', this)
+    this.setState({ 'show': false })
   }
 
   handleClick4 () {
@@ -40,6 +73,11 @@ class App extends React.Component {
   handleClick5 = () => console.log('====== handleClick5 =====', this)
 
   render () {
+    // console.log(<div className="DIV_CLASSNAME" id="DIV_ID" style={{ color: 'red' }}>
+    //   <span id="SPAN_ID_1">SPAN_TEXT1</span>
+    //   <span id="SPAN_ID_2" onClick={() => { console.log('SPAN_TEXT2....')}}>SPAN_TEXT2</span>
+    // </div>)
+    console.log('================', this.state)
     return (
       <div>
         <div id="1">
@@ -49,6 +87,9 @@ class App extends React.Component {
           <button onClick={this.handleClick3}>React3 'constructor bind'</button>
           <button onClick={this.handleClick4.bind(this)}>React4 '函数bind'</button>
           <button onClick={this.handleClick5}>React5 '函数 就是使用箭头函数创建'</button>
+          {
+            this.state.show && <Button text={this.state.text} />
+          }
         </div>
 
         <div id="2">
