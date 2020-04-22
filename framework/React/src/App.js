@@ -1,6 +1,13 @@
+
 import React from 'react';
 import DOM from './tools/virtualDom.js';
 import Button from './components/button';
+import Test from './components/setState';
+// 高阶函数
+import HOC_Fn from './components/HOC_Fn'
+import HOC_Component from './components/HOC_Component'
+
+export const Context = React.createContext('defaultContext')
 
 class App extends React.Component {
   static defaultProps = {
@@ -28,6 +35,9 @@ class App extends React.Component {
     console.log('======  componentDidMount ====== ', this.state)
     document.body.appendChild(DOM)
     console.log(DOM)
+
+    this.refs.vm.setAttribute('class', 'vmstyle')
+    console.log('this.refs.vm.......', this.refs.vm)
   }
 
   componentWillReceiveProps (nextProps){
@@ -78,8 +88,9 @@ class App extends React.Component {
     //   <span id="SPAN_ID_2" onClick={() => { console.log('SPAN_TEXT2....')}}>SPAN_TEXT2</span>
     // </div>)
     console.log('================', this.state)
+    const HOC = HOC_Fn (HOC_Component)
     return (
-      <div>
+      <Context.Provider value = {{ github: 'hhhhh', wechat: 'wechat' }}>
         <div id="1">
           <h3>1. 合成事件, 事件绑定 </h3>
           <button onClick={this.handleClick1}>React1  'onClick=this.handleClick1'</button>
@@ -93,13 +104,23 @@ class App extends React.Component {
         </div>
 
         <div id="2">
-          <h3>2. Virtual Dom</h3>
+          <h3 ref="vm">2. Virtual Dom</h3>
           <div className="DIV_CLASSNAME" id="DIV_ID" style={{ color: 'red' }}>
             <span id="SPAN_ID_1">SPAN_TEXT1</span>
             <span id="SPAN_ID_2">SPAN_TEXT2</span>
           </div>
         </div>
-      </div>
+
+        <Test test='linjiayu' />
+        <HOC { ...this.props } />
+
+        <h1>key值</h1>
+        <ul>
+          {
+            [1,2,3].map((val, key) => <li key={key}>{ val }</li>)
+          }
+        </ul>
+      </Context.Provider>
     )
     
   }
